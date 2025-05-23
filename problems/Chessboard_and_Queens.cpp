@@ -17,7 +17,7 @@ using namespace std;
 void solve(){
 	vector<vector<char>> matrix(9,vector<char>(9,' '));
 	for(int i = 1;i<=8;i++)
-		for(int j =1; j< 8;j++)
+		for(int j =1; j<=8;j++)
 			cin>> matrix[i][j];
 	vector<bool> col(9,false);
 	vector<bool> left(16, false);
