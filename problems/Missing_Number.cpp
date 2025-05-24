@@ -15,16 +15,15 @@ using namespace std;
 /*
 */
 void solve(){
-	string s;
-	cin>> s;
-	int n = s.size();
-	int result = 0;
-	for(int i =0;i< n;){
-		int index = i;
-		while(index < n && s[index] == s[i]) index++;
-		result = max( result, index - i );
+	int n; cin>> n;
+	long long sum = ((long long)(n+1)*n)/2;
+	for(int i =0;i<n-1;i++){
+		int a;
+		cin>> a;
+		sum-=a;
 	}
-	cout<< result <<endl;
+	cout<< sum <<endl;
+
 }
  
 int main() {

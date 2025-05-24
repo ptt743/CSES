@@ -15,14 +15,11 @@ using namespace std;
 /*
 */
 void solve(){
-	string s;
-	cin>> s;
-	int n = s.size();
-	int result = 0;
-	for(int i =0;i< n;){
-		int index = i;
-		while(index < n && s[index] == s[i]) index++;
-		result = max( result, index - i );
+	int n; cin>> n;
+	long long result = 1;
+	int mod = 1e9 +7;
+	for(int i =1;i<=n;i++){
+		result = ((result%mod) * (2ll%mod))%mod;
 	}
 	cout<< result <<endl;
 }

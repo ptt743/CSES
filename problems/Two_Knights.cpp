@@ -15,16 +15,9 @@ using namespace std;
 /*
 */
 void solve(){
-	string s;
-	cin>> s;
-	int n = s.size();
-	int result = 0;
-	for(int i =0;i< n;){
-		int index = i;
-		while(index < n && s[index] == s[i]) index++;
-		result = max( result, index - i );
-	}
-	cout<< result <<endl;
+	int n;
+	long long result = 0;
+	int arr = {0,}
 }
  
 int main() {

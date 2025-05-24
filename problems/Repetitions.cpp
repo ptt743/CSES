@@ -23,6 +23,7 @@ void solve(){
 		int index = i;
 		while(index < n && s[index] == s[i]) index++;
 		result = max( result, index - i );
+		i = index;
 	}
 	cout<< result <<endl;
 }

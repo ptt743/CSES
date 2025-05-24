@@ -15,16 +15,23 @@ using namespace std;
 /*
 */
 void solve(){
-	string s;
-	cin>> s;
-	int n = s.size();
-	int result = 0;
-	for(int i =0;i< n;){
-		int index = i;
-		while(index < n && s[index] == s[i]) index++;
-		result = max( result, index - i );
+	int n; cin>> n;
+	int maxeven = (n%2==0)?n:n-1;
+	int minodd = 1;
+	if( maxeven >=2 && abs(maxeven - minodd)==1){
+		cout <<"NO SOLUTION"<<endl;
+		return ;
+	} 
+	int count =2;
+	while(count<=maxeven){
+		cout<< count <<" ";
+		count +=2;
 	}
-	cout<< result <<endl;
+	while(minodd<=n){
+		cout<< minodd <<" ";
+		minodd+=2;
+	}
+
 }
  
 int main() {

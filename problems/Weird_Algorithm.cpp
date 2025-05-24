@@ -15,16 +15,16 @@ using namespace std;
 /*
 */
 void solve(){
-	string s;
-	cin>> s;
-	int n = s.size();
-	int result = 0;
-	for(int i =0;i< n;){
-		int index = i;
-		while(index < n && s[index] == s[i]) index++;
-		result = max( result, index - i );
+	long long m;
+	cin >> m;
+	while(m!=1){
+		cout<< m<<" ";
+		if(m%2==0) m/=2;
+		else m = 3*m+1;
+
 	}
-	cout<< result <<endl;
+	cout<<"1"<<endl;
+
 }
  
 int main() {
