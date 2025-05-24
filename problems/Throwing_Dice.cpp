@@ -14,11 +14,11 @@ using namespace std;
 //*****taipt*****//
 /*
 */
-const int SIZE = 6;
+const int SIZE = 6;	
+const long long mod = 1e9 + 7;
 void solve(){
 	long long n;
 	cin>> n;
-	long long mod = 1e9 + 7;
 	vector<long long> dp(n+1, 0ll);
 	dp[0] = 1;
 	for(int i =1;i<=n;i++){
@@ -36,15 +36,17 @@ vector<vector<int>> matmul(vector<vector<int>> & a, vector<vector<int>> &b){
 	for(int i =0;i<SIZE;i++){
 		for(int j = 0;j<SIZE;j++){
 			for(int k = 0;k<SIZE;k++){
-				c[i][j] = (c[i][j] + a[i][k] + b[k][j])%mod;
+				int temp = (a[i][k]%mod)*(b[k][j]%mod)%mod;
+				c[i][j] = (c[i][j]%mod + temp%mod)%mod;
 			}
 		}
 	}
 	return c;
 }
 
-vector<vector<int>> matexp(vector<vector<int>> M, int exp){
+vector<vector<int>> matexp(vector<vector<int>>&M, long long exp){
 	vector<vector<int>> res = vector<vector<int>> (SIZE,vector<int>(SIZE,0));
+	for(int i =0;i< SIZE;i++) res[i][i] = 1;	
 	while(exp){
 		if(exp%2) res = matmul(res,M);
 		M = matmul(M,M);
@@ -54,29 +56,29 @@ vector<vector<int>> matexp(vector<vector<int>> M, int exp){
 }
 
 void solve2(){
-	int n; cin>> n;
+	long long n; cin>> n;
 	if(n<=5) {
-		cout<< (1<<n)<<endl;
+		cout<< (1<<(n-1))<<endl;
 		return;
 	}
-	vector<int> basement(6,0);
-	for(int i =1;i<=6;i++) basement[i-1] = (1<<i);
-	vector<vector<int>> M={{1,1,1,1,1},
-			      {1,0,0,0,0},
-			      {0,1,0,0,0},
-			      {0,0,1,0,0}
-			      {0,0,0,1,0},
-			      {0,0,0,0,1}};
-	vector<vector<int>> mn = matexp(M,n-5);
-	int res = 0;
+	vector<long long> basement={32,16,8,4,2,1};
+	vector<vector<int>> M={{1,1,1,1,1,1},
+			      {1,0,0,0,0,0},
+			      {0,1,0,0,0,0},
+			      {0,0,1,0,0,0},
+			      {0,0,0,1,0,0},
+			      {0,0,0,0,1,0}};
+	vector<vector<int>> mn = matexp(M,n-6);
+	long long res = 0;
 	for(int i = 0;i< SIZE;i++){
-		res= (res + mn[0][i] * basement[i])%mod;	
+		long long temp = (mn[0][i]%mod*basement[i]%mod)%mod;
+		res= (res%mod + temp%mod)%mod;	
 	}
 	cout<< res<<endl;
 }
  
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0);
-    solve();
+    solve2();
     return 0;
 }
