@@ -15,7 +15,20 @@ using namespace std;
 /*
 */
 void solve(){
-		
+	int n; cin>> n;
+	vector<long long> arr(n);
+	for(int i =0;i< n;i++) cin>> arr[i];
+	sort(arr.begin(), arr.end());
+	long long maxVal = 0;
+	long long sum = 0;
+	for(int i =0;i< n;i++){
+		maxVal = max(maxVal, arr[i]);
+		sum+= arr[i];
+	}
+
+	if(maxVal > sum- maxVal) cout<< 2* maxVal<<endl;
+	else cout<< sum<<endl;
+
 }
  
 int main() {
