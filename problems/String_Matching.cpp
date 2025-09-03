@@ -14,46 +14,78 @@ using namespace std;
 //*****taipt*****//
 /*
 */
-void solve(){
-	string first, second;
- 
-	cin>> first >> second;
- 
-	long long mod = 1e9+3;
-	int base = 31;
+void solve2(){
+	string s;
+	string pattern;
+	cin>> s >> pattern;
 	
-	int n = second.size();
- 
-	long long h =0l;
-	for(int i =0;i< n;i++){
-		h = ((h*base) + (second[i] - 'a' +1))%mod;
+	int n = s.size();
+	int m = pattern.size();
+	
+	int base = 31;
+	long long mod = 1e9 +3;
+
+	vector<long long> powder(n+1,1);
+	for(int i=1;i<=n;i++) 
+		powder[i] = (powder[i-1]*base)%mod;
+
+	vector<long long> hashT(n+1,0);
+	long long pttn = 0;
+	
+	for(int i =0;i<m;i++){
+		pttn = (pttn*base + (pattern[i] - 'a'+1))%mod;
 	}
- 
-	int m = first.size();
-	vector<long long> prefix_hash(m+1, 0ll);
-	vector<long long> power_base(m+1, 1ll);
- 
-	for(int i =0;i< m;i++){
-		prefix_hash[i+1] = (prefix_hash[i]*base + (first[i] - 'a'+1)) % mod;
-		power_base[i+1] = (power_base[i]*base)%mod;
+
+	for(int i =1;i<=n;i++){
+		hashT[i] =(hashT[i-1]*base + (s[i-1]-'a'+1))%mod;
 	}
- 
-	function<long long(int,int)> get_hash=[&](int left, int right){
-		long long hash = ((prefix_hash[right+1]  - prefix_hash[left]*power_base[right - left +1])  + mod *mod) %mod;
-		return hash;
+
+	function<long long(int,int)> getHash=[&](int x, int y){
+		return (hashT[y] - hashT[x-1]* powder[y-x+1] + mod*mod)%mod;
 	};
-	int count =0;
-	for(int i =0;i< m- n+1;i++){
-		if(get_hash(i, i +  n -1) == h){
-			count++;	
+	int count = 0;
+	for(int i =1;i<= n - m +1;i++){
+		if(getHash(i,i+m-1)==pttn){
+			count++;
+		}	
+	}
+	cout<< count <<endl;
+	
+
+}
+void solve3(){
+	string s;
+	string pattern;
+	cin>> s >> pattern;
+
+	int k = pattern.size();
+	vector<int> lps = vector<int>(k,0);
+	for(int i =1;i< k;i++){
+		int j = lps[i-1];
+		while(j>0 && pattern[i] != pattern[j]) j = lps[j-1];
+		if(pattern[i] == pattern[j]) j++;
+		lps[i] = j;
+	}
+	int n = s.size();
+	int m = pattern.size();
+
+	vector<int> res = vector<int>();
+	int count = 0;
+	for(int i = 0, j = 0; i<n;i++){
+		while(j>0 && s[i]!=pattern[j]) j = lps[j-1];
+		if(s[i]== pattern[j]) j++;
+		if(j == m){
+			count++;
+			j = lps[m-1];
 		}
 	}
-	cout<< count<< endl;
- 
+
+	cout<< count <<endl;
+
 }
  
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0);
-    solve();
+    solve3();
     return 0;
 }
