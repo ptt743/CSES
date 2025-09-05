@@ -5,82 +5,87 @@
 #include<queue>
 #include<stack>
 #include<set>
-#include<map>
 #include<unordered_map>
 #include<cmath>
 #include<functional>
 #define ll long long
-
+ 
 using namespace std;
 //*****taipt*****//
 /*
 */
-void solve(){
-	int n,m;
-	cin>> n >> m;
-	vector<vector<char>> graph(n, vector<char>(m,'a'));
-	pair<int,int> A,B;
-	for(int i =0;i< n;i++)
-		for(int j =0;j< m;j++){
-			cin>> graph[i][j];
-			if(graph[i][j]=='A') A = {i,j};
-			if(graph[i][j]=='B') B = {i,j};
-		}
-	vector<int> dx= {1,-1,0,0};
-	vector<int> dy= {0,0,-1,1};
-	vector<vector<bool>> visited(n,vector<bool>(m,false));
-	vector<vector<pair<int,int>>> path(n, vector<pair<int,int>>(m,{0,0}));
+void solve2(){
+	string s;
+	string pattern;
+	cin>> s >> pattern;
+	
+	int n = s.size();
+	int m = pattern.size();
+	
+	int base = 31;
+	long long mod = 1e9 +3;
 
-	path[A.first][A.second] = A;
-	function<void(pair<int,int>)> bfs=[&](pair<int,int> s){
-		queue<pair<int,int>> qq;
-		qq.push(s);
-		visited[s.first][s.second] = true;
-		while(!qq.empty()){
-			pair<int,int> f = qq.front();
-			qq.pop();
+	vector<long long> powder(n+1,1);
+	for(int i=1;i<=n;i++) 
+		powder[i] = (powder[i-1]*base)%mod;
 
-			for(int i =0;i< 4;i++){
-				int nextx = f.first + dx[i];
-				int nexty = f.second + dy[i];
-				if(nextx >=0 && nextx <=n 
-				   && nexty >=0 && nexty<=m 
-				   && !visited[nextx][nexty]){
-					if(graph[nextx][nexty] == '#') continue;
-						visited[nextx][nexty]= true;
-						path[nextx][nexty]= f;
-						qq.push({nextx, nexty});
-				}
-			}
-		}
-	};
-	bfs({A.first, A.second});
-	map<pair<int,int>,char> direct;
-	direct[{1,0}] = 'D';
-	direct[{-1,0}]= 'U';
-	direct[{0,1}] = 'R';
-	direct[{0,-1}] = 'L';
-
-	if(path[B.first][B.second]==make_pair(0,0)) cout<<"NO"<<endl;
-	else {
-		cout<< "YES"<<endl;
-		pair<int,int> temp = B;
-		string s ="";
-		while(temp!=A){
-			s = direct[{temp.first - path[temp.first][temp.second].first
-				, temp.second - path[temp.first][temp.second].second}] + s;
-			temp = path[temp.first][temp.second];
-		}
-		cout<< s.size()<<endl;
-		cout<< s<<endl;
-
+	vector<long long> hashT(n+1,0);
+	long long pttn = 0;
+	
+	for(int i =0;i<m;i++){
+		pttn = (pttn*base + (pattern[i] - 'a'+1))%mod;
 	}
 
+	for(int i =1;i<=n;i++){
+		hashT[i] =(hashT[i-1]*base + (s[i-1]-'a'+1))%mod;
+	}
+
+	function<long long(int,int)> getHash=[&](int x, int y){
+		return (hashT[y] - hashT[x-1]* powder[y-x+1] + mod*mod)%mod;
+	};
+	int count = 0;
+	for(int i =1;i<= n - m +1;i++){
+		if(getHash(i,i+m-1)==pttn){
+			count++;
+		}	
+	}
+	cout<< count <<endl;
+	
+
+}
+void solve3(){
+	string s;
+	string pattern;
+	cin>> s >> pattern;
+
+	int k = pattern.size();
+	vector<int> lps = vector<int>(k,0);
+	for(int i =1;i< k;i++){
+		int j = lps[i-1];
+		while(j>0 && pattern[i] != pattern[j]) j = lps[j-1];
+		if(pattern[i] == pattern[j]) j++;
+		lps[i] = j;
+	}
+	int n = s.size();
+	int m = pattern.size();
+
+	vector<int> res = vector<int>();
+	int count = 0;
+	for(int i = 0, j = 0; i<n;i++){
+		while(j>0 && s[i]!=pattern[j]) j = lps[j-1];
+		if(s[i]== pattern[j]) j++;
+		if(j == m){
+			count++;
+			j = lps[m-1];
+		}
+	}
+
+	cout<< count <<endl;
 
 }
  
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0);
-    solve();
+    solve3();
     return 0;
 }
