@@ -1,6 +1,8 @@
 #!/bin/bash
-echo $1
-SOURCE_DIR="$1"
+echo $*
+raw="$*"
+SOURCE_DIR="${raw// /_}"
+SOURCE_DIR="${SOURCE_DIR}.cpp"
 echo "SOURCE_DIR=$SOURCE_DIR" > /tmp/my_variable.sh
-cp ../template.cpp "$1" | nvim "$1"
+cp ../template.cpp "$SOURCE_DIR" | nvim "$SOURCE_DIR"
 
