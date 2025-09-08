@@ -38,7 +38,7 @@ void solve(){
 		bool check = true;
 		while( curr <=n){
 			int len = min(i, n - curr+1);
-			check &= (getHash(1,len) == getHash(curr, curr + len - 1));
+			check &t (getHash(1,len) == getHash(curr, curr + len - 1));
 			curr +=len;
 		}
 		if(check) res.push_back(i);

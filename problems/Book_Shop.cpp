@@ -23,11 +23,12 @@ void solve(){
 	for(int i =1;i<=n;i++) cin>> s[i];
 
 	vector<vector<int>> dp(n+1,vector<int>(x+1,0));
-	for(int i =1;i< n;i++){
+	for(int i =1;i<=n;i++){
 		for(int j = 1;j<=x;j++){
 			dp[i][j] = max(dp[i-1][j], dp[i][j]);
-			if(j - h[i] >=0)
-				dp[i][j] = max( dp[i-1][j- h[i]], dp[i][j]);
+			if(j - h[i] >=0){
+				dp[i][j] = max( dp[i-1][j- h[i]] + s[i], dp[i][j]);
+			}
 		}
 	}
 	cout<< dp[n][x]<<endl;
