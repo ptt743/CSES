@@ -16,26 +16,27 @@ using namespace std;
 /*
 */
 void solve(){
-	long long n,k;
-	cin>> n >> k;
-	long long x,a,b,c;
-	cin>> x >> a >> b >>c;
-
-	vector<long long> arr(n+1,0l);
-	vector<long long> prefix(n+1,0l);
-	long long result =0l;
-	arr[1]= x;
-	prefix[1] = x;
-	for(int i =2;i<=n;i++){
-		arr[i] = ( arr[i-1] * a + b)%c;
-		prefix[i] = prefix[i-1] | arr[i];
-		if(i>=k){
-			result^=(prefix[i] | !(prefix[i-k]));
-		}
+	int n;
+	cin>> n;
+	string s; 
+	cin>> s;
+	int m = s.size();
+	if( m > n) {
+		cout<<"0"<<endl;
+		return;
 	}
 
-	cout<< result <<endl;
+	int result  =1;
+	int count = n - m;
+	int mod = 1e9 +7;
+	cout<< count <<endl;
+	for(int i = 0;i< count;i++){
+		result = ( result%mod * 26%mod) %mod;
+	}
+	count++;
+	if(count>0) result = (result%mod * count%mod)%mod;
 
+	cout<< result <<endl;
 }
  
 int main() {
