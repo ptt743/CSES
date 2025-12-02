@@ -16,7 +16,22 @@ using namespace std;
 /*
 */
 void solve(){
-	
+	int n,k;
+	cin>> n >> k;
+	vector<long long> arr(n,0);
+	for(int i =0;i< n;i++) cin>> arr[i];
+
+	map<int,int> mp;
+	int left = 0;
+	for(int i =0;i< n;i++){
+		mp[arr[i]]++;
+		if(i>=k-1){
+			cout<< mp.size()<<" ";
+			mp[arr[left]]--;
+			if(mp[arr[left]]==0) mp.erase(arr[left]);
+			left++;
+		}
+	}
 }
  
 int main() {
